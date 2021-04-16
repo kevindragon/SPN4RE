@@ -1,11 +1,10 @@
 import torch, random, gc
 from torch import nn, optim
-from tqdm import tqdm
 from transformers import AdamW
 from utils.average_meter import AverageMeter
 from utils.functions import formulate_gold
 from utils.metric import metric, num_metric, overlap_metric
-import nni
+
 
 class Trainer(nn.Module):
     def __init__(self, model, data, args):
@@ -106,7 +105,6 @@ class Trainer(nn.Module):
             torch.cuda.empty_cache()
         print("Best result on test set is %f achieving at epoch %d." % (best_f1, best_result_epoch), flush=True)
         """@nni.report_final_result(best_f1)"""
-
 
     def eval_model(self, eval_loader):
         self.model.eval()

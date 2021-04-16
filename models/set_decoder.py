@@ -1,6 +1,8 @@
 import torch.nn as nn
 import torch
-from transformers.modeling_bert import BertIntermediate, BertOutput, BertAttention, BertLayerNorm, BertSelfAttention
+# from transformers.modeling_bert import BertIntermediate, BertOutput, BertAttention, BertLayerNorm, BertSelfAttention
+from transformers.models.bert.modeling_bert import BertIntermediate, BertOutput, BertAttention, BertSelfAttention
+from torch.nn.modules.normalization import LayerNorm as BertLayerNorm
 
 
 class SetDecoder(nn.Module):
@@ -27,7 +29,7 @@ class SetDecoder(nn.Module):
         self.head_end_metric_3 = nn.Linear(config.hidden_size, 1, bias=False)
         self.tail_start_metric_3 = nn.Linear(config.hidden_size, 1, bias=False)
         self.tail_end_metric_3 = nn.Linear(config.hidden_size, 1, bias=False)
-        
+
         torch.nn.init.orthogonal_(self.head_start_metric_1.weight, gain=1)
         torch.nn.init.orthogonal_(self.head_end_metric_1.weight, gain=1)
         torch.nn.init.orthogonal_(self.tail_start_metric_1.weight, gain=1)
@@ -37,8 +39,6 @@ class SetDecoder(nn.Module):
         torch.nn.init.orthogonal_(self.tail_start_metric_2.weight, gain=1)
         torch.nn.init.orthogonal_(self.tail_end_metric_2.weight, gain=1)
         torch.nn.init.orthogonal_(self.query_embed.weight, gain=1)
-
-
 
     def forward(self, encoder_hidden_states, encoder_attention_mask):
         bsz = encoder_hidden_states.size()[0]
@@ -54,7 +54,7 @@ class SetDecoder(nn.Module):
             hidden_states = layer_outputs[0]
 
         class_logits = self.decoder2class(hidden_states)
-        
+
         head_start_logits = self.head_start_metric_3(torch.tanh(
             self.head_start_metric_1(hidden_states).unsqueeze(2) + self.head_start_metric_2(
                 encoder_hidden_states).unsqueeze(1))).squeeze()

@@ -15,7 +15,6 @@ class Data:
         self.test_loader = []
         self.weight = {}
 
-
     def show_data_summary(self):
         print("DATA SUMMARY START:")
         print("     Relation Alphabet Size: %s" % self.relational_alphabet.size())
@@ -49,7 +48,7 @@ def build_data(args):
     return data
 
 
-def save_data_setting(data, args):
+def save_data_setting(data: Data, args):
     new_data = copy.deepcopy(data)
     data.show_data_summary()
     if not os.path.exists(args.generated_data_directory):

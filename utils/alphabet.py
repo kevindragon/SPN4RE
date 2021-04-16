@@ -32,7 +32,6 @@ class Alphabet:
             self.index_num[self.next_index] = 1
             self.next_index += 1
 
-
     def get_index(self, instance):
         try:
             index = self.instance2index[instance]
@@ -109,5 +108,3 @@ class Alphabet:
         """
         loading_name = name if name else self.__name
         self.from_json(json.load(open(os.path.join(input_directory, loading_name + ".json"))))
-
-

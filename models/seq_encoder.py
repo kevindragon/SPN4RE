@@ -14,5 +14,6 @@ class SeqEncoder(nn.Module):
         self.config = self.bert.config
 
     def forward(self, input_ids, attention_mask):
-        last_hidden_state, pooler_output = self.bert(input_ids, attention_mask=attention_mask)
-        return last_hidden_state, pooler_output
+        outputs = self.bert(input_ids, attention_mask=attention_mask)
+        # last_hidden_state, pooler_output = self.bert(input_ids, attention_mask=attention_mask)
+        return outputs.last_hidden_state, outputs.pooler_output

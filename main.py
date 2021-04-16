@@ -34,21 +34,23 @@ def set_seed(seed):
 
 
 if __name__ == '__main__':
+    # Kevin add
+    print('torch.cuda.is_available()', torch.cuda.is_available())
+    #
 
     parser = argparse.ArgumentParser()
     data_arg = add_argument_group('Data')
-    
+
     # data_arg.add_argument('--dataset_name', type=str, default="NYT-exact")
     # data_arg.add_argument('--train_file', type=str, default="./data/NYT/exact_data/train.json")
     # data_arg.add_argument('--valid_file', type=str, default="./data/NYT/exact_data/valid.json")
     # data_arg.add_argument('--test_file', type=str, default="./data/NYT/exact_data/test.json")
-    
+
     # data_arg.add_argument('--dataset_name', type=str, default="NYT-partial")
     # data_arg.add_argument('--train_file', type=str, default="./data/NYT/casrel_data/new_train.json")
     # data_arg.add_argument('--valid_file', type=str, default="./data/NYT/casrel_data/new_valid.json")
     # data_arg.add_argument('--test_file', type=str, default="./data/NYT/casrel_data/new_test.json")
-    
-    
+
     data_arg.add_argument('--dataset_name', type=str, default="WebNLG")
     data_arg.add_argument('--train_file', type=str, default="./data/WebNLG/clean_WebNLG/new_train.json")
     data_arg.add_argument('--valid_file', type=str, default="./data/WebNLG/clean_WebNLG/new_valid.json")
@@ -86,15 +88,13 @@ if __name__ == '__main__':
     misc_arg.add_argument('--visible_gpu', type=int, default=1)
     misc_arg.add_argument('--random_seed', type=int, default=1)
 
-
-
-
     args, unparsed = get_args()
     os.environ["CUDA_VISIBLE_DEVICES"] = str(args.visible_gpu)
     for arg in vars(args):
         print(arg, ":",  getattr(args, arg))
     set_seed(args.random_seed)
     data = build_data(args)
+
     model = SetPred4RE(args, data.relational_alphabet.size())
     trainer = Trainer(model, data, args)
     trainer.train_model()
